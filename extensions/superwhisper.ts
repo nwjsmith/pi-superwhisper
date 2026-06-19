@@ -255,7 +255,8 @@ export default async function superwhisperExtension(pi: ExtensionAPI): Promise<v
     switch (outcome.kind) {
       case "response":
         try {
-          pi.sendUserMessage(outcome.text)
+          // followUp queues cleanly if the agent is already streaming again.
+          pi.sendUserMessage(outcome.text, { deliverAs: "followUp" })
           log("info", `Voice response sent back to pi for session=${sessionId}`)
         } catch (err) {
           log("error", `Failed to sendUserMessage: ${err}`)
